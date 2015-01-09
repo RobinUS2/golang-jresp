@@ -41,7 +41,7 @@ func (jr *JResp) set(k string, v interface{}) {
 	jr.data[k] = v
 }
 
-func (jr *JResp) ToString() string {
+func (jr *JResp) ToString(prettyPrint bool) string {
 	// Ensure we have a status
 	if jr.data["status"] == nil {
 		log.Fatal("Did not set status")
@@ -57,7 +57,13 @@ func (jr *JResp) ToString() string {
 	jr.set("parsetime", fmt.Sprintf("%s", elapsed))
 
 	// To JSON
-	b, err := json.Marshal(jr.data)
+	if prettyPrint {
+		// Nice
+		b, err := json.MarshalIndent(jr.data, "", "    ")
+	} else {
+		// Regular format
+		b, err := json.Marshal(jr.data)
+	}
 	if err != nil {
 		log.Println(fmt.Sprintf("error:", err))
 		return ""
