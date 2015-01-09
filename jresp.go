@@ -57,12 +57,14 @@ func (jr *JResp) ToString(prettyPrint bool) string {
 	jr.set("parsetime", fmt.Sprintf("%s", elapsed))
 
 	// To JSON
+	var b []byte
+	var err error
 	if prettyPrint {
 		// Nice
-		b, err := json.MarshalIndent(jr.data, "", "    ")
+		b, err = json.MarshalIndent(jr.data, "", "    ")
 	} else {
 		// Regular format
-		b, err := json.Marshal(jr.data)
+		b, err = json.Marshal(jr.data)
 	}
 	if err != nil {
 		log.Println(fmt.Sprintf("error:", err))
